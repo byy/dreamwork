@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style type="text/css">
+	canvas{
+		width:500px;
+		height:500px;
+		margin:0 auto;
+	}
+	</style>
+</head>
+<body onload="setInterval(draw_clock, 1000)">
+	<canvas id="panel" width="500" height="500">Thank for visiting, your browser doesn't surpport u!</canvas>
+</body>
+<script type="text/javascript">
+var ctx = document.getElementById("panel").getContext("2d");
+var xlen = 500;
+var ylen = 500;
+
+function draw_clock()
+{
+	ctx.save();
+	ctx.clearRect(0, 0, xlen, ylen);
+	ctx.lineCap = "round";
+	ctx.translate(xlen/2, ylen/2);
+	ctx.rotate(-Math.PI/2);
+	ctx.scale(0.4, 0.4);
+	
+	var now = new Date();
+	var hour = now.getHours();
+	var min = now.getMinutes();
+	var sec = now.getSeconds();
+	hour = hour > 12 ? hour-12 : hour;
+	draw_radius(0, 0, 150, 10, Math.PI*2/12*hour, "#666");
+	draw_radius(0, 0, 200, 10, Math.PI*2/60*min, "#666");
+	draw_radius(0, 0, 230, 10, Math.PI*2/60*sec, "#aaa");
+	//draw_radius(0, 0, 230, 10, Math.PI*2/60*sec, "#aaa");
+	//draw_radius(0, 0, 230, 10, Math.PI*2/60*sec, "#aaa");
+	draw_dot("red");
+	draw_circle("#black");
+	draw_scale(12, 20, 15, "black");
+	draw_scale(60, 10, 10, "black");
+}
+function draw_scale(scale, len, width, color)
+{
+	ctx.save();
+	ctx.strokeStyle = color;
+	ctx.lineWidth = width;
+	for(var i=0;i<scale;i++)
+	{
+		ctx.beginPath();
+		ctx.rotate(2*Math.PI/scale);
+		ctx.moveTo(xlen/2 - 20, 0);
+		ctx.lineTo(xlen/2 - 20 - len, 0);
+		ctx.closePath();
+		ctx.stroke();
+	}
+	ctx.restore();
+}
+
+function draw_radius(x, y, len, width, deg, color)
+{
+	ctx.save();
+	ctx.lineWidth = width;
+	ctx.strokeStyle = color;  // 绿色路径
+	ctx.rotate(deg);
+	ctx.beginPath();
+	ctx.moveTo(0,0);
+	ctx.lineTo(x + len, y);
+	ctx.closePath();
+	ctx.stroke();  // 进行绘制
+	ctx.restore();
+}
+
+function draw_dot(color)
+{
+	ctx.save();
+	ctx.fillStyle = color;  // 绿色路径
+	ctx.arc(0, 0, 20, 0, 2*Math.PI);
+	ctx.fill();  // 进行绘制
+	ctx.restore();
+}
+
+function draw_circle(color)
+{
+	ctx.save();
+	ctx.strokeStyle = color;  // 绿色路径
+	ctx.lineWidth = 10;
+	ctx.beginPath();
+	ctx.arc(0, 0, 240, 0, 2*Math.PI);
+	ctx.stroke();  // 进行绘制
+	ctx.restore();
+}
+
+</script>
+</html>
